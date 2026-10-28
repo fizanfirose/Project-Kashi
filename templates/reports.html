@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">TURN RECORDS INTO ANSWERS</p><h1>Reports</h1><p class="muted">Live SQL summaries. Run the additional business queries in Workbench.</p></div></section>
+<section class="panel"><div class="panel-title"><h2>Branch balances</h2></div><div class="table-scroll"><table><thead><tr><th>Branch</th><th>Accounts</th><th>Total balance (INR)</th></tr></thead><tbody>{% for b in branches %}<tr><td>{{ b.BranchName }}</td><td>{{ b.accounts }}</td><td class="amount">{{ b.total|money }}</td></tr>{% else %}<tr><td colspan="3" class="empty">No branches yet.</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="panel"><div class="panel-title"><h2>Today's money movement</h2></div><p class="hint">Incoming and outgoing transfers are separate categories. Do not add them together as new deposits.</p><div class="table-scroll"><table><thead><tr><th>Type</th><th>Entries</th><th>Total amount (INR)</th></tr></thead><tbody>{% for t in totals %}<tr><td>{{ t.TransactionType.replace('_',' ').title() }}</td><td>{{ t.entries }}</td><td class="amount">{{ t.total|money }}</td></tr>{% else %}<tr><td colspan="3" class="empty">No money movements today.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

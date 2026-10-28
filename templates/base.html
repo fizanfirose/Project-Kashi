@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Overview{% endblock %} · Kashi</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-icon">K</span> kashi<span class="brand-dot">.</span></a>
+    <p class="nav-label">WORKSPACE</p>
+    <nav aria-label="Main navigation">
+    {% for endpoint,label,icon in [('index','Overview','01'),('customers','Customers','02'),('accounts','Accounts','03'),('money_desk','Money desk','04'),('history','Activity','05'),('directory','Branches & team','06'),('reports','Reports','07')] %}
+      <a href="{{ url_for(endpoint) }}" class="nav-link {{ 'active' if request.endpoint == endpoint else '' }}" {% if request.endpoint == endpoint %}aria-current="page"{% endif %}><span>{{ icon }}</span>{{ label }}</a>
+    {% endfor %}
+    </nav>
+    <div class="sidebar-footer"><span class="status-dot"></span> Classroom demonstration<br><small>Flask + MySQL · Project Kashi</small></div>
+  </aside>
+  <main>
+    <header class="topbar"><span>PROJECT KASHI <span class="separator">/</span> BANKING WORKSPACE</span><span class="demo-badge">LOCAL DEMO</span></header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category,message in messages %}<div class="notice {{ category }}" role="status">{{ message }}</div>{% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <footer>Built to understand how data moves. Fictional accounts and money only.</footer>
+  </main>
+</body>
+</html>

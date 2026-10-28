@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% from '_ledger.html' import ledger %}
+{% block title %}Activity{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">THE RECORD OF EVERY MOVE</p><h1>Activity</h1><p class="muted">Latest 200 successful ledger entries for the selected scope. Server local time.</p></div><a class="button" href="{{ url_for('money_desk') }}">New operation →</a></section>
+<section class="panel"><form method="get" class="filter"><label>Account<select name="account_id"><option value="">All accounts</option>{% for a in accounts %}<option value="{{ a.AccountID }}" {% if selected_id==a.AccountID %}selected{% endif %}>{{ a.AccountNumber }}</option>{% endfor %}</select></label><button type="submit">Apply filter</button></form>{{ ledger(rows) }}</section>
+{% endblock %}

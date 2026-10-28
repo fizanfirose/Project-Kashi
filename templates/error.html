@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Check operation{% endblock %}
+{% block content %}<section class="panel error-panel"><p class="eyebrow">LET'S GET THIS SORTED</p><h1>{{ title }}</h1><p class="muted">{{ message }}</p><div class="error-links"><a class="button" href="{{ url_for('index') }}">Overview</a><a class="button secondary" href="{{ url_for('money_desk') }}">Fresh money form</a><a class="text-link" href="{{ url_for('history') }}">Check activity →</a></div></section>{% endblock %}

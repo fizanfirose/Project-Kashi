@@ -1,0 +1,40 @@
+erDiagram
+    branch ||--o{ employee : employs
+    branch ||--o{ account : maintains
+    customer ||--o{ account_holder : holds
+    account ||--|{ account_holder : has
+    account ||--o{ bank_transaction : records
+    account ||--o{ balance_audit : audits
+    branch {
+        int BranchID PK
+        varchar IFSCCode UK
+    }
+    customer {
+        int CustomerID PK
+        varchar Email UK
+    }
+    employee {
+        int EmployeeID PK
+        int BranchID FK
+    }
+    account {
+        int AccountID PK
+        varchar AccountNumber UK
+        decimal Balance
+        int BranchID FK
+    }
+    account_holder {
+        int CustomerID PK,FK
+        int AccountID PK,FK
+        enum HolderType
+    }
+    bank_transaction {
+        bigint TransactionID PK
+        int AccountID FK
+        decimal Amount
+        varchar ReferenceNumber
+    }
+    balance_audit {
+        bigint AuditID PK
+        int AccountID FK
+    }

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Branches & team{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">THE PEOPLE & PLACES BEHIND IT</p><h1>Branches & team</h1><p class="muted">Seeded demonstration branches and employees. Manage these records in MySQL Workbench.</p></div></section>
+<section class="branch-grid">{% for b in branches %}<article class="panel branch-card"><span class="eyebrow">BRANCH {{ '%02d'|format(b.BranchID) }}</span><h2>{{ b.BranchName }}</h2><p class="muted">{{ b.Address }}<br>{{ b.City }}, {{ b.State }}</p><div class="branch-detail"><span>IFSC <b class="mono">{{ b.IFSCCode }}</b></span><span>Contact <b>{{ b.ContactNumber }}</b></span></div></article>{% endfor %}</section>
+<section class="panel"><div class="panel-title"><h2>Employee directory</h2></div><div class="table-scroll"><table><thead><tr><th>Name</th><th>Designation</th><th>Branch</th><th>Email</th><th>Salary (INR)</th><th>Joined</th></tr></thead><tbody>{% for e in employees %}<tr><td>{{ e.EmployeeName }}</td><td>{{ e.Designation }}</td><td>{{ e.BranchName }}</td><td>{{ e.Email }}</td><td>{{ e.Salary|money }}</td><td>{{ e.JoiningDate }}</td></tr>{% else %}<tr><td colspan="6" class="empty">Run sql/seed.sql to load branches and employees.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

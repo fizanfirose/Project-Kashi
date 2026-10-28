@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Accounts{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">A PLACE FOR EVERY BALANCE</p><h1>Accounts</h1><p class="muted">Individual and joint accounts, connected to their branch.</p></div></section>
+<section class="panel"><div class="panel-title"><h2>Open an account</h2><span class="pill incoming">Starts at INR 0.00</span></div>
+{% if customers and branches %}
+<form method="post" class="form-grid">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <fieldset class="full"><legend>Select account holders</legend><p class="hint">Select one customer for an individual account, or several for a joint account. The lowest customer ID is recorded as primary.</p>
+  <div class="holder-list">{% for c in customers %}<label class="checkbox"><input type="checkbox" name="customer_ids" value="{{ c.CustomerID }}"><span>#{{ c.CustomerID }} · {{ c.FirstName }} {{ c.LastName }}</span></label>{% endfor %}</div></fieldset>
+  <label>Branch<select name="branch_id" required><option value="">Select branch</option>{% for b in branches %}<option value="{{ b.BranchID }}">{{ b.BranchName }}</option>{% endfor %}</select></label>
+  <label>Account type<select name="account_type" required>{% for kind in ['Saving','Current','Salary'] %}<option>{{ kind }}</option>{% endfor %}</select></label>
+  <div class="form-actions full"><button type="submit">Open account →</button></div>
+</form>
+{% else %}<p class="empty">Register a customer first, and make sure sql/seed.sql has been executed.</p><a class="button" href="{{ url_for('customers') }}">Register customer</a>{% endif %}</section>
+<section class="panel"><div class="panel-title"><h2>Account directory</h2><span class="muted">{{ rows|length }} accounts</span></div>
+<div class="table-scroll"><table><thead><tr><th>Account number</th><th>Holders</th><th>Type</th><th>Branch</th><th>Balance (INR)</th><th>Status</th><th></th></tr></thead><tbody>
+{% for a in rows %}<tr><td class="mono">{{ a.AccountNumber }}</td><td>{{ a.holders }}</td><td>{{ a.AccountType }}</td><td>{{ a.BranchName }}</td><td class="amount">{{ a.Balance|money }}</td><td><span class="pill">{{ a.Status }}</span></td><td><a class="text-link" href="{{ url_for('history',account_id=a.AccountID) }}">History →</a></td></tr>
+{% else %}<tr><td colspan="7" class="empty">No accounts yet. Open the first account above.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

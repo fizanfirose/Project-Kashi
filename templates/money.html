@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Money desk{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">EVERY MOVEMENT, RECORDED</p><h1>Money desk</h1><p class="muted">Deposit, withdraw, or move money between accounts.</p></div></section>
+<div class="split"><section class="panel"><div class="panel-title"><h2>New operation</h2></div>
+{% if accounts %}<form method="post" class="form-grid single">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <input type="hidden" name="reference" value="{{ reference }}">
+  <label>Operation<select name="operation" id="operation" required><option value="DEPOSIT">Deposit</option><option value="WITHDRAWAL">Withdrawal</option><option value="TRANSFER">Transfer</option></select></label>
+  <label>Account / sender<select name="account_id" required><option value="">Select account</option>{% for a in accounts %}<option value="{{ a.AccountID }}">{{ a.AccountNumber }} · INR {{ a.Balance|money }}</option>{% endfor %}</select></label>
+  <label>Receiver account <span class="hint">Only used for transfers</span><select name="receiver_id"><option value="">Select for a transfer</option>{% for a in accounts %}<option value="{{ a.AccountID }}">{{ a.AccountNumber }}</option>{% endfor %}</select></label>
+  <label>Amount (INR)<input name="amount" type="number" min="0.01" max="1000000000" step="0.01" placeholder="0.00" required></label>
+  <label>Description <span class="hint">Optional</span><input name="description" maxlength="255" placeholder="e.g. Monthly savings"></label>
+  <div class="form-actions"><button type="submit">Confirm operation →</button></div>
+</form>{% else %}<p class="empty">Open an account before making an operation.</p><a class="button" href="{{ url_for('accounts') }}">Open account</a>{% endif %}</section>
+<aside class="panel guide"><span class="eyebrow">HOW IT WORKS</span><h2>One action.<br>A consistent ledger.</h2><ol><li><b>Validate</b><p>Check the amount, account status, and available funds.</p></li><li><b>Update together</b><p>Balances and ledger entries are saved in one database transaction.</p></li><li><b>Confirm</b><p>Successful operations appear in activity with a reference number.</p></li></ol><p class="hint">A transfer creates two entries sharing the same reference: one outgoing and one incoming. Never resubmit an uncertain payment without checking activity.</p></aside></div>
+{% endblock %}

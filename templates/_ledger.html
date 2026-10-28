@@ -1,0 +1,11 @@
+{% macro ledger(rows) %}
+<div class="table-scroll"><table>
+  <thead><tr><th>Account</th><th>Type</th><th>Amount (INR)</th><th>Date & time</th><th>Reference</th></tr></thead>
+  <tbody>{% for row in rows %}<tr>
+    <td class="mono">{{ row.AccountNumber }}</td>
+    <td><span class="pill {{ 'incoming' if row.TransactionType in ['DEPOSIT','TRANSFER_IN'] else 'outgoing' }}">{{ row.TransactionType.replace('_',' ').title() }}</span></td>
+    <td class="amount">{{ '+' if row.TransactionType in ['DEPOSIT','TRANSFER_IN'] else '−' }}{{ row.Amount|money }}</td>
+    <td>{{ row.TransactionDate }}</td><td class="mono reference" title="{{ row.ReferenceNumber }}">{{ row.ReferenceNumber }}</td>
+  </tr>{% else %}<tr><td colspan="5" class="empty">No activity yet. Your first deposit will appear here.</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endmacro %}

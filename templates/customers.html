@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Customers{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">PEOPLE FIRST</p><h1>Customers</h1><p class="muted">Create a customer profile before opening an account.</p></div></section>
+<section class="panel"><div class="panel-title"><h2>Register a customer</h2><span class="muted">All fields required</span></div>
+<form method="post" class="form-grid">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label>First name<input name="first_name" maxlength="60" autocomplete="given-name" required></label>
+  <label>Last name<input name="last_name" maxlength="60" autocomplete="family-name" required></label>
+  <label>Date of birth<input type="date" name="date_of_birth" max="{{ today }}" required></label>
+  <label>Gender<select name="gender" required><option value="">Select an option</option>{% for gender in ['Male','Female','Other','Prefer not to say'] %}<option>{{ gender }}</option>{% endfor %}</select></label>
+  <label>Mobile<input type="tel" name="mobile" maxlength="20" autocomplete="tel" required></label>
+  <label>Email<input type="email" name="email" maxlength="120" autocomplete="email" required></label>
+  <label>Address<input name="address" maxlength="255" autocomplete="street-address" required></label>
+  <label>City<input name="city" maxlength="80" autocomplete="address-level2" required></label>
+  <div class="form-actions full"><button type="submit">Register customer →</button></div>
+</form></section>
+<section class="panel"><div class="panel-title"><h2>Customer directory</h2><span class="muted">{{ rows|length }} registered</span></div>
+<div class="table-scroll"><table><thead><tr><th>ID</th><th>Name</th><th>Mobile</th><th>Email</th><th>City</th><th>Registered</th></tr></thead><tbody>
+{% for row in rows %}<tr><td>#{{ row.CustomerID }}</td><td>{{ row.FirstName }} {{ row.LastName }}</td><td>{{ row.Mobile }}</td><td>{{ row.Email }}</td><td>{{ row.City }}</td><td>{{ row.RegistrationDate }}</td></tr>
+{% else %}<tr><td colspan="6" class="empty">No customers yet. Register your first customer above.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}
